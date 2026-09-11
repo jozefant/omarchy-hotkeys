@@ -79,7 +79,7 @@ def clean(text: str) -> str:
     return escape(" ".join(text.split()))
 
 
-class ManualParser(HTMLParser):
+class ManualParser(HTMLParser):  # pylint: disable=abstract-method
     """Read the headings, the notes and the hotkey tables from the manual.
 
     The parser reads the article element only. The page navigation sits outside that
@@ -226,6 +226,7 @@ def layout(scale: float) -> SimpleNamespace:
 
 
 def table(rows: list[tuple[str, str]], lay: SimpleNamespace) -> Table:
+    """Return a two-column table that lists the key combinations and the functions."""
     data = [[Paragraph(k, lay.st_key), Paragraph(v, lay.st_val)] for k, v in rows]
     t = Table(data, colWidths=[lay.KEY_W, lay.VAL_W], repeatRows=0)
     pad = 1.3 * lay.SCALE
@@ -310,6 +311,7 @@ def fit(subtitle: str, blocks: list[dict], target_pages: int) -> tuple[float, in
 
 
 def parse_args() -> argparse.Namespace:
+    """Return the command line arguments."""
     p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     p.add_argument("-o", "--output", default=DEFAULT_OUTPUT, help="output PDF path")
     p.add_argument("--source", default=MANUAL_URL,
@@ -322,6 +324,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def main() -> int:
+    """Build the sheet and return the process exit code."""
     args = parse_args()
     logging.basicConfig(
         level=logging.DEBUG if args.debug else logging.INFO,

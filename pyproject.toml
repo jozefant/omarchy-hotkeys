@@ -8,3 +8,11 @@ select = ["E", "F", "I", "UP"]
 [tool.mypy]
 strict = false
 ignore_missing_imports = true
+
+[tool.pylint.main]
+# Match the ruff target. Without this, pylint judges version-gated syntax such as
+# "X | Y" and functools.cache against the interpreter that runs it.
+py-version = "3.11"
+
+[tool.pylint.format]
+max-line-length = 100
